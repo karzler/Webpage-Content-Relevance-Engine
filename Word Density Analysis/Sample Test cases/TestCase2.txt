@@ -1,0 +1,38 @@
+------------------------------------------------------------------
+@author: Mohit Mishra
+@affliation: Indian Institute of Technology (BHU) Varansi
+@version: 1.0
+@purpose: BrightEdge 48-hours Coding Assignment
+@Category: Software Engineer
+@Task: Word Density Analysis
+Last Updated: August 10, 2015
+-------------------------------------------------------------------
+
+URL: 
+http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/
+
+Relevant Keywords/Phrases: 
+
+friend
+Indoorsy Friend
+Friend
+Indoorsy
+Introduce
+hike
+Outdoors - REI Blog
+steep four-hour  hike
+short hike
+start gently;
+Outdoors 05.04.2015 Rate
+day  hike
+Outdoors - REI
+friend set
+friend  kayaking
+hike
+steep four-hour
+Outdoors
+four-hour  hike
+“indoorsy” friend
+REI Blog
+- REI Blog
+great outdoors

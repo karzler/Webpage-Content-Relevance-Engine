@@ -1,0 +1,114 @@
+--------------------------------------------------------------------------------
+Word Density Analysis
+--------------------------------------------------------------------------------
+									
+									README
+									------
+							Author: Mohit Mishra
+			Affliation: Indian Institute of Technology (BHU) Varanasi
+					    Last Updated: August 10, 2015
+
+--------------------------------------------------------------------------------
+     						 TASK
+--------------------------------------------------------------------------------
+Given any page (URL), be able to classify the page, and return a list of 
+relevant topics.
+
+--------------------------------------------------------------------------------
+						Design Pattern
+--------------------------------------------------------------------------------
+Design Pattern used: Visitor Pattern
+Advanatges:
+1. No global/static variables have been used, and hence no thread synchronization
+   is required to be added. Multithreading can be done for processing several
+   pages at once.
+2. The Visitr Design Pattern has been used to perform the operation over Page 
+   and KeyParser. Therefore, to add a functionality to Page and/or KeyParser,
+   no source code modifications are required. A feature can be added easily just
+   by creating a new visitor and calling the visit pattern
+   
+--------------------------------------------------------------------------------
+                             Approach
+--------------------------------------------------------------------------------
+This task required breaking down the page contents to relevant keywords.
+The "scoring" of keywords to qualify them as "relevant" can be done in 
+multiple ways. In our case, we used the product "frequecy of occurrence" and 
+"word count" of keywords/keyphrases for scoring (as a heuristic for 
+differentiating keywords "weight")
+
+
+The entire algorithm can be visualized in two phases:
+1. Parsing and extracting keywords/keyphrases
+2. Analyzing ("relevant" keywords/keyphrases)
+
+Parsing the page:
+	a. Parse the keywords, making use of stop-words.
+	b. Make use of apropriate data structures (in our case, we made use of 
+	   Tree) to store keywords. Keywords can be single and/or
+	   multi words.
+
+Based on scores of keywords/keyphrases, retrieve the "relevant" keywords. 
+For this we made use of Priority Queue and a static "threshold percentile" value
+to differentiate relevant keywords from non-relevant ones. By default, threshold
+ is set to 2. The threshold percentile is basically the product of the percentile 
+(= 0.125 in our case) and the maximum score in the given set of keywords/ 
+keyphrases. Any score greater than this threshold percentile is classified as
+being "relevant". 
+
+Parsing keywords:
+-----------------
+To parse keywords, we make use of the following points
+1. The stopwords list is a list of words that do not find any significane as
+   being a keyword. Therefore is any of the candidate keyword is found to be
+   a stopword, it is not considered as a "keyword" then.
+2. A keyphrase is a string of keywords. For each keyword as being a parent, we 
+   built a keyphrase corresponding to it making use of the fact that no keyword
+   is a stopword. The keyphrase building is self-understandable in the 
+   KeyParser class.
+3. It makes sense to consider the keywords/keyphrases to be "significantly" 
+   relevantif those are similar to or match with the contents of the meta tags 
+   in the document text (HTML file). In our case, we consider the following meta
+   name tags: "title", "description", "keywords". 
+   The keywords formed from the contents of the above meta tags formed the 
+   MetaKeyword Set. If a candidate keyword/keyphrase in the document text 
+   contains any of the MetaKeywords, the are relevant keywords/keyphrases.
+   However, if the MetaKeyword set happens to be empty (that is, no definition
+   of the mentioned meta tags), then all keywords extracted are considered to be
+   probable candiates for relevant keywords/keyphrases.
+   
+--------------------------------------------------------------------------------
+						DATA STRUCTURES USED
+--------------------------------------------------------------------------------
+1. Tree (to store keywords, their frequency and score, and map of all children)
+2. Priority Queue (to store and retrieve keywords in order according to scoring)
+3. Hash Map (inside Tree)
+4. Hash Set (distinct keywords/keyphrases)
+
+Each candidate keyword/keyphrase is represented as a node (TreeNode) having the 
+following fields:
+1. value (string) - the "processed" keyword/keyphrase itself.
+2. frequency (int) - frequency of occurrence of keyword/keyphrase
+3. wordCount - number of words in keyword/keyphrase
+4. score - score of the node ( = frequecny * wordCount )
+
+Though frequency could have done a good job for our case, however note that
+word count is another property that is as relevant as frequency itself.
+
+
+The Tree is basically a Map of candidate keyword and its corresponding node and
+children. The Tree class is self-explanatory (see for comments)
+
+--------------------------------------------------------------------------------
+					   EXTERNAL LIBRARIES USED
+--------------------------------------------------------------------------------
+jsoup - jsoup is a Java library for working with real-world HTML. It provides a 
+very convenient API for extracting and manipulating data, using the best of DOM,
+CSS, and jquery-like methods.
+
+Reference: http://jsoup.org/
+--------------------------------------------------------------------------------
+						       TEST CASES
+--------------------------------------------------------------------------------
+1. http://www.amazon.com/Cuisinart-CPT-122-Compact-2-Slice-Toaster/dp/B009GQ034C/ref=sr_1_1?s=kitchen&ie=UTF8&qid=1431620315&sr=1-1&keywords=toaster
+2. http://blog.rei.com/camp/how-to-introduce-your-indoorsy-friend-to-the-outdoors/
+3. http://www.cnn.com/2013/06/10/politics/edward-snowden-profile/
